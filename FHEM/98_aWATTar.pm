@@ -355,6 +355,8 @@ sub Awattar_UpdatePricesCallback($) {
             for my $hour (keys(%$hours)) {
 
                 my $price = $prices{$day}{$hour};
+                my $price_formated = sprintf("%.3f", $price); # Auf drei Dezimalstellen runden
+
                 #my $beginTime = $times{$day}{$hour};
                 my $date = $dates{$day};
 
@@ -364,9 +366,9 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'EPEXSpot_ct_'. $day. '_'. $hour;
 
-                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$price;
+                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$price_formated;
 
-                    readingsBulkUpdate( $hash, $reading, $price );
+                    readingsBulkUpdate( $hash, $reading, $price_formated );
                     #readingsBulkUpdate( $hash, $reading.'_Time', $beginTime ) if ( defined $beginTime );
                     readingsBulkUpdate( $hash, 'EPEXSpot_ct_'. $day.'_Date', $date ) if ( defined $date );
                 }
@@ -382,10 +384,11 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'EPEXSpotTax_ct_'. $day. '_'. $hour;
                     my $priceWithTax = $price * (1 + ($taxRate / 100));
+                    my $priceWithTax_formated = sprintf("%.3f", $priceWithTax); # Auf drei Dezimalstellen runden
 
-                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceWithTax;
+                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceWithTax_formated;
 
-                    readingsBulkUpdate( $hash, $reading, $priceWithTax );
+                    readingsBulkUpdate( $hash, $reading, $priceWithTax_formated );
                     #readingsBulkUpdate( $hash, $reading.'_Time', $beginTime ) if ( defined $beginTime );
                     readingsBulkUpdate( $hash, 'EPEXSpotTax_ct_'. $day.'_Date', $date ) if ( defined $date );
                 }
@@ -402,10 +405,11 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'TotalPrice_ct_'. $day. '_'. $hour;
                     my $priceTotal = ($price + $leviesTaxes_ct + $netCosts_ct)  * (1 + ($taxRate / 100));
+                    my $priceTotal_formated = sprintf("%.3f", $priceTotal); # Auf drei Dezimalstellen runden
 
-                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceTotal;
+                    Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceTotal_formated;
 
-                    readingsBulkUpdate( $hash, $reading, $priceTotal );
+                    readingsBulkUpdate( $hash, $reading, $priceTotal_formated );
                     #readingsBulkUpdate( $hash, $reading.'_Time', $beginTime ) if ( defined $beginTime );
                     readingsBulkUpdate( $hash, 'TotalPrice_ct_'. $day.'_Date', $date ) if ( defined $date );
                 }
@@ -522,8 +526,8 @@ sub Awattar_HourTaskTimer($) {
 
             readingsBeginUpdate($hash);
 
-            readingsBulkUpdate( $hash, $reading."Current_ct", $currentPrice);
-            readingsBulkUpdate( $hash, $reading."Current_h",  $currentHour);
+            readingsBulkUpdate($hash, $reading."Current_ct", $currentPrice);
+            readingsBulkUpdate($hash, $reading."Current_h",  $currentHour);
 
             readingsEndUpdate($hash, 1 );
         }
@@ -537,8 +541,8 @@ sub Awattar_HourTaskTimer($) {
 
             readingsBeginUpdate($hash);
 
-            readingsBulkUpdate( $hash, $reading."Previous_ct", $previousPrice);
-            readingsBulkUpdate( $hash, $reading."Previous_h",  $previousHour);
+            readingsBulkUpdate($hash, $reading."Previous_ct", $previousPrice);
+            readingsBulkUpdate($hash, $reading."Previous_h",  $previousHour);
 
             readingsEndUpdate($hash, 1 );
         }

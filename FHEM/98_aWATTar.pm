@@ -607,6 +607,7 @@ sub Awattar_RequestUpdate($) {
 
     # Convert DateTime object to epoch
     my $startEpoch = $dt->epoch;
+    
     # convert to ms
     $startEpoch = $startEpoch * 1000;
 

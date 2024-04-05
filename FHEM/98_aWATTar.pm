@@ -355,7 +355,7 @@ sub Awattar_UpdatePricesCallback($) {
             for my $hour (keys(%$hours)) {
 
                 my $price = $prices{$day}{$hour};
-                my $price_formated = sprintf("%.3f", $price); # Auf drei Dezimalstellen runden
+                my $price_formated = sprintf("%.4f", $price); # Auf drei Dezimalstellen runden
 
                 #my $beginTime = $times{$day}{$hour};
                 my $date = $dates{$day};
@@ -384,7 +384,7 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'EPEXSpotTax_ct_'. $day. '_'. $hour;
                     my $priceWithTax = $price * (1 + ($taxRate / 100));
-                    my $priceWithTax_formated = sprintf("%.3f", $priceWithTax); # Auf drei Dezimalstellen runden
+                    my $priceWithTax_formated = sprintf("%.4f", $priceWithTax); # Auf drei Dezimalstellen runden
 
                     Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceWithTax_formated;
 
@@ -405,7 +405,7 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'TotalPrice_ct_'. $day. '_'. $hour;
                     my $priceTotal = ($price + $leviesTaxes_ct + $netCosts_ct)  * (1 + ($taxRate / 100));
-                    my $priceTotal_formated = sprintf("%.3f", $priceTotal); # Auf drei Dezimalstellen runden
+                    my $priceTotal_formated = sprintf("%.4f", $priceTotal); # Auf drei Dezimalstellen runden
 
                     Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceTotal_formated;
 
@@ -602,8 +602,8 @@ sub Awattar_RequestUpdate($) {
     $dt->set_minute(0);
     $dt->set_second(0);
 
-    #subtract 1 hour from dt
-    $dt->subtract(hours => 1);
+    #subtract 2 hour from dt
+    $dt->subtract(hours => 3);
 
     # Convert DateTime object to epoch
     my $startEpoch = $dt->epoch;

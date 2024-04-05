@@ -602,12 +602,12 @@ sub Awattar_RequestUpdate($) {
     $dt->set_minute(0);
     $dt->set_second(0);
 
-    #subtract 2 hour from dt
-    $dt->subtract(hours => 3);
+    # Subtract 180 minutes from the DateTime object
+    $dt->subtract(minutes => 180);
 
     # Convert DateTime object to epoch
     my $startEpoch = $dt->epoch;
-    
+
     # convert to ms
     $startEpoch = $startEpoch * 1000;
 

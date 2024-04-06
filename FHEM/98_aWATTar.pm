@@ -608,10 +608,11 @@ sub Awattar_RequestUpdate($) {
     # Subtract 1hour from startEpoch
     my $startEpoch = $startEpoch - 3600;
 
+    Log3 $name, 5, 'Start Epoch Datetime dt: '.$dt->strftime($format);
+    Log3 $name, 5, 'Start Epoch Datetime startEpoch: '.DateTime->from_epoch(epoch => $startEpoch);
+
     # convert to ms
     $startEpoch = $startEpoch * 1000;
-
-    Log3 $name, 5, 'Start Epoch Datetime: '.$dt->strftime($format);
 
     $dt->add(days => 2);
     # Convert DateTime object to epoch

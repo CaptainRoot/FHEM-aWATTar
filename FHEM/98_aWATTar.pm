@@ -304,8 +304,8 @@ sub Awattar_UpdatePricesCallback($) {
             my $begin = $element->{'start_timestamp'};
             my $price = $element->{'marketprice'};
             
-            # Convert Mwh to kwh
-            $price = $price / 1000;
+            # Convert Euro / Mwh to ct/kwh
+            $price = $price / 10;
 
             Log3 $name, 5, "Begin: $begin, Price: $price\n";
 

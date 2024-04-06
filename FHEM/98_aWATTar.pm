@@ -608,8 +608,8 @@ sub Awattar_RequestUpdate($) {
     # Subtract 1hour from startEpoch
     my $startEpoch = $startEpoch - 3600;
 
-    Log3 $name, 5, 'Start Epoch Datetime dt: '.$dt->strftime($format);
-    Log3 $name, 5, 'Start Epoch Datetime startEpoch: '.DateTime->from_epoch(epoch => $startEpoch);
+    Log3 $name, 3, 'Start Epoch Datetime dt: '.$dt->strftime($format);
+    Log3 $name, 3, 'Start Epoch Datetime startEpoch: '.DateTime->from_epoch(epoch => $startEpoch);
 
     # convert to ms
     $startEpoch = $startEpoch * 1000;
@@ -620,7 +620,7 @@ sub Awattar_RequestUpdate($) {
     # convert to ms
     $endEpoch = $endEpoch * 1000;
     
-    Log3 $name, 5, 'End Epoch Datetime: '.$dt->strftime($format);
+    Log3 $name, 3, 'End Epoch Datetime: '.$dt->strftime($format);
 
     my $getPriceValueUrl = $url{"getPriceValue"};
 

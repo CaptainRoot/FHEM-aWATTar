@@ -355,7 +355,7 @@ sub Awattar_UpdatePricesCallback($) {
             for my $hour (keys(%$hours)) {
 
                 my $price = $prices{$day}{$hour};
-                my $price_formated = sprintf("%.4f", $price); # Auf drei Dezimalstellen runden
+                my $price_formated = sprintf("%.2f", $price); # Auf drei Dezimalstellen runden
 
                 #my $beginTime = $times{$day}{$hour};
                 my $date = $dates{$day};
@@ -384,7 +384,7 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'EPEXSpotTax_ct_'. $day. '_'. $hour;
                     my $priceWithTax = $price * (1 + ($taxRate / 100));
-                    my $priceWithTax_formated = sprintf("%.4f", $priceWithTax); # Auf drei Dezimalstellen runden
+                    my $priceWithTax_formated = sprintf("%.2f", $priceWithTax); # Auf drei Dezimalstellen runden
 
                     Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceWithTax_formated;
 
@@ -405,7 +405,7 @@ sub Awattar_UpdatePricesCallback($) {
 
                     my $reading = 'TotalPrice_ct_'. $day. '_'. $hour;
                     my $priceTotal = ($price + $leviesTaxes_ct + $netCosts_ct)  * (1 + ($taxRate / 100));
-                    my $priceTotal_formated = sprintf("%.4f", $priceTotal); # Auf drei Dezimalstellen runden
+                    my $priceTotal_formated = sprintf("%.2f", $priceTotal); # Auf drei Dezimalstellen runden
 
                     Log3 $name, 5, 'Generate Reading; '.$reading.' with price: '.$priceTotal_formated;
 
@@ -588,12 +588,6 @@ sub Awattar_RequestUpdate($) {
     # Aktuelles Datum und Uhrzeit erhalten
     my $dt = DateTime->now;
 
-    my $local_time_zone = DateTime::TimeZone->new( name => 'local' );
-    my $time_zone = $local_time_zone->name;
-
-    Log3 $name, 5, 'TimeZoneInfo 1: ' . $local_time_zone;
-    Log3 $name, 5, 'TimeZoneInfo 2: ' . $time_zone;
-
     # Beispiel für ein benutzerdefiniertes Format
     my $format = '%Y-%m-%dT00:00:00'; #2023-11-24T00:00:00
 
@@ -605,8 +599,8 @@ sub Awattar_RequestUpdate($) {
     # Convert DateTime object to epoch
     my $startEpoch = $dt->epoch;
 
-    # Subtract 1hour from startEpoch
-    my $startEpoch = $startEpoch - 3600;
+    # Subtract 2 hour from startEpoch
+    my $startEpoch = $startEpoch - 7200;
 
     Log3 $name, 3, 'Start Epoch Datetime dt: '.$dt->strftime($format);
     Log3 $name, 3, 'Start Epoch Datetime startEpoch: '.DateTime->from_epoch(epoch => $startEpoch);
@@ -615,8 +609,10 @@ sub Awattar_RequestUpdate($) {
     $startEpoch = $startEpoch * 1000;
 
     $dt->add(days => 2);
+
     # Convert DateTime object to epoch
     my $endEpoch = $dt->epoch;
+    
     # convert to ms
     $endEpoch = $endEpoch * 1000;
     
